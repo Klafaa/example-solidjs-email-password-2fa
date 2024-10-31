@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id                         Int                          @id @default(autoincrement())
+  email                      String                       @unique
+  username                   String
+  password_hash              String
+  email_verified             Int                          @default(0)
+  totp_key                   Boolean?
+  recovery_code              Boolean
+  session                    session[]
+  email_verification_request email_verification_request[]
+  password_reset_session     password_reset_session[]
+
+  @@index([email])
+}
+
+model session {
+  id                  String @id @default(uuid())
+  user_id             Int
+  user                user   @relation(fields: [user_id], references: [id])
+  expires_at          Int
+  two_factor_verified Int    @default(0)
+}
+
+model email_verification_request {
+  id         String @id @default(uuid())
+  user_id    Int
+  user       user   @relation(fields: [user_id], references: [id])
+  email      String
+  code       String
+  expires_at Int
+}
+
+model password_reset_session {
+  id                  String @id @default(uuid())
+  user_id             Int
+  user                user   @relation(fields: [user_id], references: [id])
+  email               String
+  code                String
+  expires_at          Int
+  email_verified      Int    @default(0)
+  two_factor_verified Int    @default(0)
+}
