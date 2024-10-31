@@ -1,5 +1,7 @@
 # Solid.js Lucia-auth Adapter
 
+in progress and not yet in use
+
 A third-party adapter for [Lucia-auth](https://lucia-auth.com/) designed specifically for Solid.js projects.
 
 This library provides an authentication solution for Solid.js applications by leveraging the robust and secure features of Lucia-auth. The adapter aims to streamline the integration and use of Lucia-auth within Solid.js, allowing for fast and easy setup.
